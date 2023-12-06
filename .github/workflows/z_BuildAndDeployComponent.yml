@@ -1,0 +1,54 @@
+name: Build And Deploy Vario Business Component
+on:
+    workflow_call:
+        inputs:
+            type:
+                description: 'Define Application Type'
+                required: true
+                type: string
+            branch:
+                description: 'Define Branch to check-out'
+                required: true
+                type: string
+                default: 'master'
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+    CONFIGURATION: Release
+    DOTNET_CORE_VERSION: 8.0.x
+    WORKING_DIRECTORY: "${{ github.workspace }}/"
+  
+  
+    
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+          with: 
+                ref: ${{ github.event.inputs.branch}}
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+        - name: Determine Variables
+          run: |
+            if [ "${{ github.event.inputs.type }}" = "Api" ]; then
+                export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository"
+            elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
+                export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository.Interface"
+            fi
+            echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
+        - name: Restore
+          run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+        - name: Build
+          run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+        - name: Publish
+          run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}" --no-self-contained
+        - name: Publish Artifacts
+          uses: actions/upload-artifact@v1.0.0
+          with:
+            name: ${{ env.ARTIFACT_NAME }}
+            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
