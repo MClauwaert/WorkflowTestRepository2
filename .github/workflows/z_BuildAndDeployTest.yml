@@ -11,9 +11,9 @@ jobs:
     uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
     with:
         type: 'Api'  
-        branch: ${{ github.event.inputs.branch}}
+        branch: ${{ github.event.inputs.branch }}
   build-Interface:
     uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
     with:
         type: 'Interface'  
-        branch: ${{ github.event.inputs.branch}}
+        branch: ${{ github.event.inputs.branch }}

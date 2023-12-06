@@ -19,8 +19,8 @@ env:
     CONFIGURATION: Release
     DOTNET_CORE_VERSION: 8.0.x
     WORKING_DIRECTORY: "${{ github.workspace }}/"
-    ARTIFACT_NAME: VarioBusiness
-    AZURE_WEBAPP_PACKAGE_PATH: "${{github.workspace}}/src/Vario.Api/publish"
+    ARTIFACT_NAME: ""
+    AZURE_WEBAPP_PACKAGE_PATH: ""
   
 jobs:
     build:
@@ -33,7 +33,7 @@ jobs:
           uses: actions/setup-dotnet@v3
           with:
             dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-        - name: Determine Variables
+        - name: Determine WORKING_DIRECTORY Variables
           run: |
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
                 export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository"
@@ -41,7 +41,8 @@ jobs:
                 export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository.Interface"
             fi
             echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
-            
+        - name: Determine AZURE_WEBAPP_PACKAGE_PATH Variables
+          run: |
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
                 export AZURE_WEBAPP_PACKAGE_PATH="${{github.workspace}}/src/WorkflowTestRepository/publish"
             elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
@@ -50,6 +51,14 @@ jobs:
             echo "AZURE_WEBAPP_PACKAGE_PATH=AZURE_WEBAPP_PACKAGE_PATH" >> $GITHUB_ENV
 
             
+            if [ "${{ github.event.inputs.type }}" = "Api" ]; then
+                export ARTIFACT_NAME="WorkflowTestRepositoryAPI"
+            elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
+                export ARTIFACT_NAME="WorkflowTestRepositoryInterface"
+            fi
+            echo "ARTIFACT_NAME=ARTIFACT_NAME" >> $GITHUB_ENV
+        - name: Determine ARTIFACT_NAME Variables
+          run: |
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
                 export ARTIFACT_NAME="WorkflowTestRepositoryAPI"
             elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
