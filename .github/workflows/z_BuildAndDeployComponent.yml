@@ -38,15 +38,15 @@ jobs:
           run: |
     
             if [ "${{ inputs.type }}" = "Api" ]; then
-                export  WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository"
+                export  WORKING_DIRECTORY="${{ github.workspace }}/WorkflowTestRepository"
             elif [ "${{ inputs.type }}" = "Interface" ]; then
-                export  WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository.Interface"
+                export  WORKING_DIRECTORY="${{ github.workspace }}/WorkflowTestRepository.Interface"
             fi
 
             if [ "${{ inputs.type }}" = "Api" ]; then
-                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository/publish"
+                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/WorkflowTestRepository/publish"
             elif [ "${{ inputs.type }}" = "Interface" ]; then
-                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository.Interface/publish"
+                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/WorkflowTestRepository.Interface/publish"
             fi
 
             if [ "${{ inputs.type }}" = "Api" ]; then
