@@ -8,26 +8,12 @@ on:
             default: 'master'
 jobs:
   build-API:
-    runs-on: ubuntu-latest
-    steps:
-      - name: check-out
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.branch}}
-      - name: Trigger Reusable Workflow
-        uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
-        with:
-          type: 'Api'  
-          branch: ${{ github.event.inputs.branch}}
+    uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
+    with:
+        type: 'Api'  
+        branch: ${{ github.event.inputs.branch}}
   build-Interface:
-    runs-on: ubuntu-latest
-    steps:
-      - name: check-out
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.branch}}
-      - name: Trigger Reusable Workflow
-        uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
-        with:
-          type: 'Api'  
-          branch: ${{ github.event.inputs.branch}}
+    uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
+    with:
+        type: 'Api'  
+        branch: ${{ github.event.inputs.branch}}
