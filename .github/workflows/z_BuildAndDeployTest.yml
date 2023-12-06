@@ -7,12 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Reusable Workflow
-        uses: MClauwaert/WorkflowTestRepository2/.github/workflows/z_BuildAndDeployComponent.yml  
+        uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
         with:
           type: 'Api'  
           branch: 'master'  
       - name: Trigger Reusable Workflow
-        uses: MClauwaert/WorkflowTestRepository2/.github/workflows/z_BuildAndDeployComponent.yml  
+        uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
         with:
           type: 'Interface'  
           branch: 'master'  
