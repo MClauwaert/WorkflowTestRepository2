@@ -36,7 +36,6 @@ jobs:
         - name: Determine Variables
           shell: bash
           run: |
-    
             if [ "${{ inputs.type }}" = "Api" ]; then
                 export  WORKING_DIRECTORY="${{ github.workspace }}/WorkflowTestRepository"
             elif [ "${{ inputs.type }}" = "Interface" ]; then
@@ -61,6 +60,10 @@ jobs:
 
             echo "$WORKING_DIRECTORY - $AZURE_WEBAPP_PACKAGE_PATH - $ARTIFACT_NAME"
             echo "${{ env.WORKING_DIRECTORY}} - ${{ env.AZURE_WEBAPP_PACKAGE_PATH}} - ${{ env.ARTIFACT_NAME}}"
+        - name: Show Secret 
+          run: |
+            echo "Printing the secret value '${{ secrets.AVerySenstiveSecret }}' "    
+            echo "${{ secrets.AVerySenstiveSecret }}"    
         - name: Restore
           run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
         - name: Build

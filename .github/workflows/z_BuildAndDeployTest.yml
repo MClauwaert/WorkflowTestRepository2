@@ -12,8 +12,10 @@ jobs:
     with:
         type: 'Api'  
         branch: ${{ github.event.inputs.branch }}
+    secrets: inherit
   build-Interface:
     uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
     with:
         type: 'Interface'  
         branch: ${{ github.event.inputs.branch }}
+    secrets: inherit
