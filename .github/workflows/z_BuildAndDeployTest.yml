@@ -15,5 +15,5 @@ jobs:
   build-Interface:
     uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
     with:
-        type: 'Api'  
+        type: 'Interface'  
         branch: ${{ github.event.inputs.branch}}
