@@ -19,9 +19,9 @@ env:
     CONFIGURATION: Release
     DOTNET_CORE_VERSION: 8.0.x
     WORKING_DIRECTORY: "${{ github.workspace }}/"
+    ARTIFACT_NAME: VarioBusiness
+    AZURE_WEBAPP_PACKAGE_PATH: "${{github.workspace}}/src/Vario.Api/publish"
   
-  
-    
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -41,6 +41,14 @@ jobs:
                 export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository.Interface"
             fi
             echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
+
+            
+            if [ "${{ github.event.inputs.type }}" = "Api" ]; then
+                export AZURE_WEBAPP_PACKAGE_PATH="${{github.workspace}}/src/WorkflowTestRepository/publish"
+            elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
+                export AZURE_WEBAPP_PACKAGE_PATH="${{github.workspace}}/src/WorkflowTestRepository.Interface/publish"
+            fi
+            echo "AZURE_WEBAPP_PACKAGE_PATH=AZURE_WEBAPP_PACKAGE_PATH" >> $GITHUB_ENV
         - name: Restore
           run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
         - name: Build
