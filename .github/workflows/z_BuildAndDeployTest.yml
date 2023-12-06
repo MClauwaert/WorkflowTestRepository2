@@ -1,18 +1,33 @@
 name: Build And Deploy Test
 on:
   workflow_dispatch: 
-
+      inputs:
+        branch:
+            description: 'Define branch name'
+            required: true
+            default: 'master'
 jobs:
-  trigger_build:
+  build-API:
     runs-on: ubuntu-latest
     steps:
+      - name: check-out
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch}}
       - name: Trigger Reusable Workflow
         uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
         with:
           type: 'Api'  
-          branch: 'master'  
+          branch: ${{ github.event.inputs.branch}}
+  build-Interface:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check-out
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch}}
       - name: Trigger Reusable Workflow
         uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
         with:
-          type: 'Interface'  
-          branch: 'master'  
+          type: 'Api'  
+          branch: ${{ github.event.inputs.branch}}
