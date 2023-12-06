@@ -38,28 +38,28 @@ jobs:
           run: |
     
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
-                WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository"
+                export  WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository"
             elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
-                WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository.Interface"
+                export  WORKING_DIRECTORY="${{ github.workspace }}/src/WorkflowTestRepository.Interface"
             fi
 
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
-                AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository/publish"
+                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository/publish"
             elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
-                AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository.Interface/publish"
+                export  AZURE_WEBAPP_PACKAGE_PATH="${{ github.workspace }}/src/WorkflowTestRepository.Interface/publish"
             fi
 
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
-                ARTIFACT_NAME="WorkflowTestRepositoryAPI"
+                export  ARTIFACT_NAME="WorkflowTestRepositoryAPI"
             elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
-                ARTIFACT_NAME="WorkflowTestRepositoryInterface"
+                export ARTIFACT_NAME="WorkflowTestRepositoryInterface"
             fi
 
             echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
             echo "AZURE_WEBAPP_PACKAGE_PATH=$AZURE_WEBAPP_PACKAGE_PATH" >> $GITHUB_ENV
             echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
 
-            echo "$$WORKING_DIRECTORY - $AZURE_WEBAPP_PACKAGE_PATH - $ARTIFACT_NAME"
+            echo "$WORKING_DIRECTORY - $AZURE_WEBAPP_PACKAGE_PATH - $ARTIFACT_NAME"
             echo "${{ env.WORKING_DIRECTORY}} - ${{ env.AZURE_WEBAPP_PACKAGE_PATH}} - ${{ env.ARTIFACT_NAME}}"
         - name: Restore
           run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
