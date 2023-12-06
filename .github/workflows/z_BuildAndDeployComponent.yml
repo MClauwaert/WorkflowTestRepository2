@@ -13,7 +13,7 @@ on:
                 default: 'master'
 
 concurrency: 
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.inputs.type }}-${{ github.ref }}
   cancel-in-progress: true
 env:
     CONFIGURATION: Release
@@ -41,7 +41,6 @@ jobs:
                 export WORKING_DIRECTORY="${{github.workspace}}/src/WorkflowTestRepository.Interface"
             fi
             echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
-
             
             if [ "${{ github.event.inputs.type }}" = "Api" ]; then
                 export AZURE_WEBAPP_PACKAGE_PATH="${{github.workspace}}/src/WorkflowTestRepository/publish"
@@ -49,6 +48,14 @@ jobs:
                 export AZURE_WEBAPP_PACKAGE_PATH="${{github.workspace}}/src/WorkflowTestRepository.Interface/publish"
             fi
             echo "AZURE_WEBAPP_PACKAGE_PATH=AZURE_WEBAPP_PACKAGE_PATH" >> $GITHUB_ENV
+
+            
+            if [ "${{ github.event.inputs.type }}" = "Api" ]; then
+                export ARTIFACT_NAME="WorkflowTestRepositoryAPI"
+            elif [ "${{ github.event.inputs.type }}" = "Interface" ]; then
+                export ARTIFACT_NAME="WorkflowTestRepositoryInterface"
+            fi
+            echo "ARTIFACT_NAME=ARTIFACT_NAME" >> $GITHUB_ENV
         - name: Restore
           run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
         - name: Build
