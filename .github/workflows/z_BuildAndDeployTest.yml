@@ -7,15 +7,19 @@ on:
             required: true
             default: 'master'
 jobs:
-  build-API:
-    uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
-    with:
-        type: 'Api'  
-        branch: ${{ github.event.inputs.branch }}
-    secrets: inherit
-  build-Interface:
-    uses: ./.github/workflows/z_BuildAndDeployComponent.yml  
-    with:
-        type: 'Interface'  
-        branch: ${{ github.event.inputs.branch }}
-    secrets: inherit
+  build-components:
+    name: Build ${{ matrix.component }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [Api, Interface]  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build and Deploy ${{ matrix.component }}
+        uses: ./.github/workflows/z_BuildAndDeployComponent.yml
+        with:
+          type: ${{ matrix.component }}  
+          branch: ${{ github.event.inputs.branch }}
+          secrets: inherit
+
