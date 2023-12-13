@@ -15,5 +15,5 @@ jobs:
     with:
         type: ${{ matrix.component }}  
         branch: ${{ github.event.inputs.branch }}
-        secrets: inherit
+    secrets: inherit
 
