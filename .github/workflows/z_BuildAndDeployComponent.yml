@@ -27,7 +27,7 @@ jobs:
             AZURE_WEBAPP_PACKAGE_PATH: ${{ steps.InitVariables.outputs.AZURE_WEBAPP_PACKAGE_PATH }}
             ARTIFACT_NAME: ${{ steps.InitVariables.outputs.ARTIFACT_NAME }}
         steps:
-        - name: InitVariables
+        - id: InitVariables
           shell: bash
           run: |
             if [ "${{ inputs.type }}" = "Api" ]; then
