@@ -48,11 +48,7 @@ jobs:
                     export ARTIFACT_NAME="WorkflowTestRepositoryInterface"
                 fi
 
-                echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> "$GITHUB_OUTPUT"
-                echo "AZURE_WEBAPP_PACKAGE_PATH=$AZURE_WEBAPP_PACKAGE_PATH" >> "$GITHUB_OUTPUT"
-                echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
-
-                echo "$WORKING_DIRECTORY - $AZURE_WEBAPP_PACKAGE_PATH - $ARTIFACT_NAME"
+                echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_OUTPUT
     build:
         runs-on: ubuntu-latest
         needs: initialize
