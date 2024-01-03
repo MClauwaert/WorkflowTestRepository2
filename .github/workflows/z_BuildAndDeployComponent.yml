@@ -65,13 +65,13 @@ jobs:
             echo "Printing the secret value '${{ secrets.AVerySenstiveSecret }}' "    
             echo "${{ secrets.AVerySenstiveSecret }}"    
         - name: Restore
-          run: dotnet restore "${{ jobs.initialize.outputs.WORKING_DIRECTORY }}"
+          run: dotnet restore "${{ needs.initialize.outputs.WORKING_DIRECTORY }}"
         - name: Build
-          run: dotnet build "${{ jobs.initialize.outputs.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+          run: dotnet build "${{ needs.initialize.outputs.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
         - name: Publish
-          run: dotnet publish "${{ jobs.initialize.outputs..WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ jobs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}" --no-self-contained
+          run: dotnet publish "${{ needs.initialize.outputs..WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ needs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}" --no-self-contained
         - name: Publish Artifacts
           uses: actions/upload-artifact@v1.0.0
           with:
-            name: ${{ jobs.initialize.outputs.ARTIFACT_NAME }}
-            path: ${{ jobs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}
+            name: ${{ needs.initialize.outputs.ARTIFACT_NAME }}
+            path: ${{ needs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}
