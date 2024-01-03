@@ -69,7 +69,7 @@ jobs:
         - name: Build
           run: dotnet build "${{ needs.initialize.outputs.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
         - name: Publish
-          run: dotnet publish "${{ needs.initialize.outputs..WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ needs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}" --no-self-contained
+          run: dotnet publish "${{ needs.initialize.outputs.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ needs.initialize.outputs.AZURE_WEBAPP_PACKAGE_PATH }}" --no-self-contained
         - name: Publish Artifacts
           uses: actions/upload-artifact@v1.0.0
           with:
