@@ -1,0 +1,16 @@
+name: BuildOnPush
+on:
+    push:
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+     build-components:
+          strategy:
+                matrix:
+                 component: [Api, Interface]  
+          uses: ./.github/workflows/z_BuildAndDeployComponent.yml
+          with:
+                type: ${{ matrix.component }}  
+                branch: ${{ github.ref }}
+          secrets: inherit
