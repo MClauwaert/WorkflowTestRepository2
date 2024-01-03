@@ -28,6 +28,7 @@ jobs:
             ARTIFACT_NAME: ${{ steps.InitVariables.outputs.ARTIFACT_NAME }}
         steps:
         - id: InitVariables
+          name: InitVariables
           shell: bash
           run: |
             if [ "${{ inputs.type }}" = "Api" ]; then
@@ -47,8 +48,10 @@ jobs:
                 elif [ "${{ inputs.type }}" = "Interface" ]; then
                     export ARTIFACT_NAME="WorkflowTestRepositoryInterface"
                 fi
-
+                
                 echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_OUTPUT
+                echo "AZURE_WEBAPP_PACKAGE_PATH=$AZURE_WEBAPP_PACKAGE_PATH" >> $GITHUB_OUTPUT
+                echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_OUTPUT
     build:
         runs-on: ubuntu-latest
         needs: initialize
