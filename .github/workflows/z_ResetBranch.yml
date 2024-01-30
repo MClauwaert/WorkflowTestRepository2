@@ -1,0 +1,41 @@
+name: Delete and Recreate branch
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: "Define source branch"
+        required: true
+        type: string
+      target:
+        description: "Define target branch name"
+        required: true
+        type: string
+env:
+  COMMIT_SHA: ""
+jobs:
+  RunJob:
+    runs-on: ubuntu-latest
+    if: ( inputs.target != 'develop' )
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get latest commit SHA
+        run: |
+          git fetch origin ${{ inputs.source }}
+          echo "COMMIT_SHA=$(git rev-parse origin/${{  inputs.source }})" >> $GITHUB_ENV
+
+      - name: Delete ${{ inputs.target }} branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.FOR_WEBHOOKS_SECRET }}
+          branches: ${{ inputs.target }}
+
+      - name: Create ${{ inputs.target }} branch for ${{ env.COMMIT_SHA }}
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOR_WEBHOOKS_SECRET }}
+        with:
+          sha: "${{ env.COMMIT_SHA }}"
+          branch: "${{ inputs.target}}"
