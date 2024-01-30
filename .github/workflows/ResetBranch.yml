@@ -1,0 +1,21 @@
+name: Overwrite branch from branch
+on:
+  workflow_dispatch:
+    inputs:
+      source-branch:
+        description: "Define source branch"
+        required: false
+        default: "develop"
+        type: string
+      target-branch:
+        description: "Define target branch name"
+        required: true
+        default: "master"
+        type: string
+jobs:
+  recreate-branch:
+    uses: ./.github/workflows/z_ResetBranch.yml
+    with:
+      source: ${{ github.event.inputs.source-branch }}
+      target: ${{ github.event.inputs.target-branch }}
+    secrets: inherit
