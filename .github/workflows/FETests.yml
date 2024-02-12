@@ -20,13 +20,15 @@ concurrency:
 
 jobs:
   build:
-    name: Build ${{ github.ref_name}}
+    name: Build  ${{ github.base_ref || github.ref_name}}
     runs-on: ubuntu-latest
     steps:
       - name: Github Context
         run: echo "${{ toJSON(github) }}"
       - name: head_ref
         run: echo "${{ github.head_ref}}"
+      - name: base_ref
+        run: echo "${{ github.base_ref}}"
       - name: ref_name
         run: echo "${{ github.ref_name}}"
       - name: ref
