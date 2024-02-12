@@ -1,0 +1,16 @@
+name: Build And Deploy FE
+
+on:
+  workflow_dispatch:
+  push:
+  branches:
+	- develop
+
+jobs:
+	build:
+		name: Build ${{ github.ref_name}}
+		runs-on: ubuntu-latest
+		steps:
+			- name: MyChecks
+				  run: echo "MyChecks"
+    
