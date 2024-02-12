@@ -35,7 +35,7 @@ jobs:
     name: Build as envir
     runs-on: ubuntu-latest
     environment:
-        name: ${{github.ref_name}}
+        name: ${{ github.base_ref || github.ref_name}}
     steps:
     - name: envir var
       run: echo "${{vars.API_URL}}"
