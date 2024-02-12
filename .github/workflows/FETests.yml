@@ -5,6 +5,13 @@ on:
   push:
     branches:
       - develop
+      - test
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened, closed, ready_for_review]
+    branches:
+      - develop
+      - test
       - master
 
 concurrency:
