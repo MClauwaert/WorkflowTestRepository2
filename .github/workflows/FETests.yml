@@ -3,14 +3,34 @@ name: Build And Deploy FE
 on:
   workflow_dispatch:
   push:
-  branches:
-	- develop
+    branches:
+      - develop
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref}}
+  cancel-in-progress: true
 
 jobs:
-	build:
-		name: Build ${{ github.ref_name}}
-		runs-on: ubuntu-latest
-		steps:
-			- name: MyChecks
-				  run: echo "MyChecks"
-    
+  build:
+    name: Build ${{ github.ref_name}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Context
+        run: echo "${{ toJSON(github) }}"
+      - name: head_ref
+        run: echo "${{ github.head_ref}}"
+      - name: ref_name
+        run: echo "${{ github.ref_name}}"
+      - name: ref
+        run: echo "${{ github.ref}}"
+  AsEnvir: 
+    name: Build as envir
+    runs-on: ubuntu-latest
+    environment:
+        name: ${{github.head_ref}}
+    steps:
+    - name: envir var
+      run: echo "${{vars.API_URL}}"
+    - name: envir context
+      run: echo "${{toJSON(vars)}}"
