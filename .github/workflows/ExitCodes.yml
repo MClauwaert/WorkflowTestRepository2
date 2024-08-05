@@ -1,0 +1,21 @@
+name: Exit code test
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    needs: setup-and-cache
+    runs-on: ubuntu-latest
+    name: Build (${{ github.ref_name }})
+    environment:
+      name: ${{ github.base_ref || github.ref_name }}
+    steps:
+      - if: ${{ vars.API_URL == '' }}
+        run : |
+            echo "Variable was empty"
+            exit 1
+      - name: Checkout Commit
+        uses: actions/checkout@v3
+        with:
+          submodules: true
