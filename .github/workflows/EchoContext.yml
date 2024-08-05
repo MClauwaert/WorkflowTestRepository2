@@ -1,0 +1,14 @@
+name: EchoContext
+on:
+  workflow_dispatch: 
+
+jobs:
+     debug-job:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Debug Event 1
+          run:  echo "$GITHUB_CONTEXT"
+        - name: Debug Event 2
+          run:  echo "${{ github }}"
+        - name: Debug Event 3
+          run:  echo "${{ toJSON(github) }}"
